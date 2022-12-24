@@ -26,7 +26,7 @@ contract FundMe {
 
     // Could we make this constant?  /* hint: no! We should make it immutable! */
     address private immutable i_owner;
-    uint256 public constant MINIMUM_USD = 50 * 10**18;
+    uint256 public constant MINIMUM_USD = 0 * 10**18;
 
     AggregatorV3Interface private s_priceFeed;
 
@@ -41,13 +41,15 @@ contract FundMe {
         s_priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
-    // fallback() external payable {
-    //     fund();
-    // }
+    fallback() external payable {
+        if (msg.value > 0) {
+            fund();
+        }
+    }
 
-    // receive() external payable {
-    //     fund();
-    // }
+    receive() external payable {
+        fund();
+    }
 
     /**  notice This function runs this contract
      *  param describe parameters
